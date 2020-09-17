@@ -8,3 +8,9 @@
 • Recherche d’entrées via des relations : $x r_isa chien • Recherche d’entrées via des formes de chaîne : guerre de % 
 • L’interface doit être rapide (affichage instantanée) même pour les grosses entrées (pensez à avoir des caches multiples, des éléments précalculés). 
 • L’interface doit être efficace ET esthétique – vous devez l’avoir testée sur des utilisateurs non informaticiens
+
+
+
+
+exemple de projet responsive ::
+https://github.com/yestellar/interior-design
