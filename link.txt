@@ -1,0 +1,4 @@
+http://www.jeuxdemots.org/rezo-dump.php?
+
+caching avec node js
+https://hapi.dev/tutorials/caching/?lang=en_US
