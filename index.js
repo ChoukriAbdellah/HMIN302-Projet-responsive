@@ -1,36 +1,21 @@
-'use strict';
+// Charge le module HTTP
+const http = require("http");
 
-const Hapi = require('@hapi/hapi');
-const { json } = require('body-parser');
-const utilities = require('./utility');
+const hostname = "127.0.0.1";
+const port = 8000;
 
+// Crée un serveur HTTP
+const server = http.createServer((req, res) {
 
-const init = async () => {
+   // Configure l'en-tête de la réponse HTTP avec le code du statut et le type de contenu
+   response.writeHead(200, {'Content-Type': 'text/plain'});
 
-    const server = Hapi.server({
-        port: 3001,
-        host: 'localhost'
-    });
+   // Envoie le corps de la réponse "Salut tout le monde"
+   response.end('Salut tout le monde\n');
+})
 
-    server.route({
-        method: 'GET',
-        path: '/',
-        handler: (request, h) => {
-            return { defs : "test"};
-        }
-    });
-
-    await server.start();
-    console.log('Server running on %s', server.info.uri);
-    console.log(utilities.get("mot"));
-};
-
-process.on('unhandledRejection', (err) => {
-
-    console.log(err);
-    process.exit(1);
-});
-
-init();
-
-
+// Démarre le serveur à l'adresse 127.0.0.1 sur le port 8000
+// Affiche un message dès que le serveur commence à écouter les requêtes
+server.listen(port, hostname, () => {
+   console.log(`Le serveur tourne à l'adresse http://${hostname}:${port}/`);
+})

@@ -14,7 +14,7 @@ let start = new Date();
 
 
 
-function makeCall (url) {
+function makeCall (url, word) {
     return new Promise((resolve, reject) => {
         http.get(url,function (res) {
             res.setEncoding("binary");
@@ -53,10 +53,15 @@ function makeCall (url) {
                          element => {
                            let element_splited =  element.split(';')
                            if(element_splited.length == 6){
-                            const regex = 'chien>[A-Za-zÀ-ÖØ-öø-ÿ-]*.*\'$'
-                               //let rafinement_word = element_splited.split('>');
-                               if(element_splited[5].match(regex) != null ){
-                                console.log(element_splited[5].match(regex)[0]);
+                            //e;213467;'chat>234460';1;86;'chat>communication textuelle'
+                            const regex = word+'>[A-Za-zÀ-ÖØ-öø-ÿ- ]*\'$';
+                            //const myRegexpRelSor=  new RegExp('+'>'+'[A-Za-zÀ-ÖØ-öø-ÿ-]*.*\'$','mg');
+                               //
+                               if(element_splited[5].match(regex) != null  ){
+                                let word_matched=element_splited[5].match(regex)[0].split('>');
+                                //console.log(element_splited[5].match(regex)[0]);
+                                semantic_refinements.push(word_matched[1]);
+
                                }
                            }
                            map_node.set(element_splited[1], element_splited[2] );
@@ -79,8 +84,10 @@ function makeCall (url) {
                         }
                         );
 
-                     infos= {'defs': def_splited}
-                     resolve(infos);
+                     infos= {'defs': def_splited, 
+                             'semantic_rafinements': semantic_refinements
+                            }
+                    resolve(infos);
                     console.log("array size = " + outgoing_relationships_array.length);
                     var end = new Date() - start ;
                     console.info('Execution time: %dms', end);
@@ -99,12 +106,13 @@ function makeCall (url) {
 function getData(word){
     url = 'http://www.jeuxdemots.org/rezo-dump.php?gotermsubmit=Chercher&gotermrel='+word+'&rel=';
    
-    makeCall(url)
+    makeCall(url, word)
    .then(function(results){
-       //console.log(results)
+       console.log( results);
    })
    .catch(console.log)
    
    }
 
-getData('chien');
+exports.get = getData;
+

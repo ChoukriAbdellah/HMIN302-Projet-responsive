@@ -59,6 +59,5 @@ function getData(word){
    
    }
 
-//getData('musique');
 
   exports.get = getData;

@@ -1,6 +1,5 @@
 
-// mise en cache coté client à développer 
-'use strict';
+
 
 const Hapi = require('@hapi/hapi');
 const CatboxRedis = require('@hapi/catbox-redis');
