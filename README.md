@@ -6,7 +6,7 @@
 • Sélection des relations à afficher (certaines peuvent être masquées) 
 
 • Affichage définitions et gestion des raffinements de sens 
-    sémantique fait
+    sémantique fait à 50%
     
 • Tri des associations par poids décroissant ou alphabétique (tri du Français pas tri alphanumérique)
   tri par poids des relations 
