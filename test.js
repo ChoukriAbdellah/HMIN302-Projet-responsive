@@ -89,6 +89,11 @@ function makeCall (url, word) {
                             }
                     resolve(infos);
                     console.log("array size = " + outgoing_relationships_array.length);
+                    // fs = require('fs');
+                    // fs.writeFile('helloworld.txt', outgoing_relationships_array,function (err) {
+                    //     if (err) return console.log(err);
+                    //     console.log('Hello World > helloworld.txt');
+                    //   });
                     var end = new Date() - start ;
                     console.info('Execution time: %dms', end);
 
@@ -113,6 +118,6 @@ function getData(word){
    .catch(console.log)
    
    }
-
+//getData('chat')
 exports.get = getData;
 
