@@ -6,12 +6,16 @@
 • Sélection des relations à afficher (certaines peuvent être masquées) 
 
 • Affichage définitions et gestion des raffinements de sens 
-
-• Trie des associations par poids décroissant ou alphabétique (tri du Français pas tri alphanumérique)
+    sémantique fait
+    
+• Tri des associations par poids décroissant ou alphabétique (tri du Français pas tri alphanumérique)
+  tri par poids des relations 
 
 • Clic sur une association => ouverture de l’entrée correspondante • Recherche d’une entrée, exacte et approximative, autocomplétion 
 
 • Recherche d’entrées via des relations : $x r_isa chien • Recherche d’entrées via des formes de chaîne : guerre de % 
+  récupérer toute les relation sr_isa dont le second terme est chien => retrourner le 1er terme
+  pour le seond type  utiliser l auto complete
 
 • L’interface doit être rapide (affichage instantanée) même pour les grosses entrées (pensez à avoir des caches multiples, des éléments précalculés). 
 
