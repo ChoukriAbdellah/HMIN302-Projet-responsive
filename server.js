@@ -9,9 +9,26 @@ var fs = require('fs');
 const settings = require("./settings");
 const HashMap = require('hashmap');
 
-//Global variables
+//Global variables and initialization
 var map_node = new HashMap();
+var relations_types=[]
+// Hashmap containt array of nodes for eatch relation
+var relation_node_couple = new Map();
+//Initialization
+for(let i=0; i<=156; i++){
+  relation_node_couple.set(i, [])
+  
+}
 
+function strMapToObj(strMap) {
+  let obj = Object.create(null);
+  for (let [k,v] of strMap) {
+    // We don’t escape the key '__proto__'
+    // which can cause problems on older engines
+    obj[k] = v;
+  }
+  return obj;
+}
 
 
 var app=express();
@@ -100,15 +117,31 @@ var app=express();
                  outgoing_relationships_splited.forEach(
                     element => {
                       let element_splited =  element.split(';')
-                      //.log( 'musique'+ '=> ' +map_node.get(element_splited[3]));
-                      outgoing_relationships_array.push(map_node.get(element_splited[3])) ;
+                      let current_id
+                      if(element_splited.length == 6  && (element_splited[4] <= 156 )){
+                         current_id=Number(element_splited[4])
+                        relation_node_couple.get(current_id).push(map_node.get(element_splited[3]));
+                       // outgoing_relationships_array.push(map_node.get(element_splited[3])) ;
+
+                      }
+                      //relation types
+                      
+                      if( (!relations_types.includes( element_splited[4]) ) && (element_splited[4] <= 156 ) ){
+                        relations_types.push(element_splited[4])
+                        
+                      }
                     }
                     );
                    // Relations and rafinement
+                   
+                   //console.log(relation_node_couple )
+                   let obj= strMapToObj(relation_node_couple)
                    infos = {
                      'status': status,
                     'defs': words, 
-                    'ramifications':semantic_refinements
+                    'ramifications':semantic_refinements,
+                    'relations_types': relations_types, 
+                    'relation_node_couple': obj
                      
                   }
                    resolve(infos);
