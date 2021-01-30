@@ -121,29 +121,29 @@ var app=express();
                       if(element_splited.length == 6  && (element_splited[4] <= 156 )){
                          current_id=Number(element_splited[4])
                         relation_node_couple.get(current_id).push(map_node.get(element_splited[3]));
-                       // outgoing_relationships_array.push(map_node.get(element_splited[3])) ;
-
                       }
-                      //relation types
                       
                       if( (!relations_types.includes( element_splited[4]) ) && (element_splited[4] <= 156 ) ){
-                        relations_types.push(element_splited[4])
-                        
+                        relations_types.push(element_splited[4])  
                       }
                     }
                     );
                    // Relations and rafinement
                    
-                   //console.log(relation_node_couple )
                    let obj= strMapToObj(relation_node_couple)
                    infos = {
                      'status': status,
                     'defs': words, 
                     'ramifications':semantic_refinements,
                     'relations_types': relations_types, 
-                    'relation_node_couple': obj
-                     
+                    'relation_node_couple': obj        
                   }
+                  //save before to send
+                  fs = require('fs');
+                    fs.writeFile('./cache/'+word+'.json', JSON.stringify(infos),function (err) {
+                        if (err) return console.log(err);
+                        console.log('Data saved');
+                      });
                    resolve(infos);
 
                   
@@ -172,16 +172,48 @@ var invokeAndProcessAPIResponse =function getData(callback,word){
  
  }
 
+ function isInCache(word){
+  const path = './cache/'+word+'.json'
+  try {
+      if (fs.existsSync(path)) {
+          return true
+      }
+    } catch(err) {
+      console.error(err)
+      return false
+    }
+}
+
+
+function readMyFile (path) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path,'utf8',(err, data)=>{
+      if (err) {
+          reject(err); // in the case of error, control flow goes to the catch block with the error occured.
+      }
+      else{
+        
+          resolve(JSON.parse(data));  // in the case of success, control flow goes to the then block with the content of the file.
+          //console.log("Resolve" + data)
+        }
+  });
+  })
+
+}
+
+
 
  app.get('/getData', function(req, res){
   var word= req.query['word']
- 
-  console.log("word in query:" + word);
-  invokeAndProcessAPIResponse(function(err, result){
-    if(err){
-      res.send(500, { error: 'something blew up' });
-    } else {
-       // Website you wish to allow to connect
+  const path = './cache/'+word+'.json'
+  //
+if(isInCache(word)){
+console.log("From cache")
+
+readMyFile(path)
+.then(function(results){
+    //console.log( "data \n \n \n"+results);
+    // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
     // Request methods you wish to allow
@@ -193,13 +225,39 @@ var invokeAndProcessAPIResponse =function getData(callback,word){
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
-      res.status(200).json(result);
+    res.status(200).json(results);
+    
+})
+.catch(console.log)
       
-    }
-  }, word);
+}
+
+  else{
+    invokeAndProcessAPIResponse(function(err, result){
+      if(err){
+        res.send(500, { error: 'something blew up' });
+      } else {
+         // Website you wish to allow to connect
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  
+      // Request methods you wish to allow
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  
+      // Request headers you wish to allow
+      res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  
+      // Set to true if you need the website to include cookies in the requests sent
+      // to the API (e.g. in case you use sessions)
+      res.setHeader('Access-Control-Allow-Credentials', true);
+        res.status(200).json(result);
+        
+      }
+    }, word);
+  }
+  
+  
 
 });
-
 
 
 
