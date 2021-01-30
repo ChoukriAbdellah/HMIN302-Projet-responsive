@@ -284,7 +284,8 @@ app.get('/', (req,res,next)=>{
   // Démarre le serveur à l'adresse 127.0.0.1 sur le port 8000
   // Affiche un message dès que le serveur commence à écouter les requêtes
   // Start the server on port 3000
-  app.listen(3000, ()=>{   
+  var PORT = process.env.PORT || 3000;
+  app.listen(PORT, ()=>{   
     console.log('Restful running on port 3000');
     var now = new Date();
   
